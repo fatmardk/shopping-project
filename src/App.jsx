@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function App() {
   const [data, setData] = useState([]);
 
-  // Canom
+  // Canom güncelleme yapıyorum..
 
   const [products, setProducts] = useState([]);
 
