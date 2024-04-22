@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 function App() {
   const [data, setData] = useState([]);
 
+  // Canom
+
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
