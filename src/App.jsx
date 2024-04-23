@@ -1,108 +1,80 @@
 import { useState, useEffect } from "react";
+import Slider from "react-slick";
+import './App.css'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Navbar from './Navbar';
 
 function App() {
-  const [data, setData] = useState([]);
-
-  // Canom güncelleme yapıyorum..
-
   const [products, setProducts] = useState([]);
-
-  const fetchProducts = async () => {
-    const response = await fetch("https://dummyjson.com/products?id=10");
-
-    if (!response.ok) throw new Error("Failed to fetch products, canom.");
-
-    const result = await response.json();
-
-    const products = result.products;
-
-    const first10Products = [...products.slice(0, 10)]
-
-    setProducts(first10Products);
-  };
-
-  const fetchUsers = async () => {
-    const response = await fetch("https://randomuser.me/api/?results=10");
-
-    if (!response.ok) {
-      throw new Error("Veriler düzgün getirilemedi.");
-    }
-
-    const data = await response.json();
-
-    const users = data.results;
-
-    setData(users);
-  };
+  const [counts, setCounts] = useState({});
 
   useEffect(() => {
-    fetchUsers();
     fetchProducts();
   }, []);
 
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://dummyjson.com/products?id=10");
+
+      if (!response.ok) throw new Error("Failed to fetch products.");
+
+      const result = await response.json();
+
+      const first10Products = [...result.products.slice(4, 30)];
+
+      setProducts(first10Products);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addCart = (productId) => {
+    setCounts((prevCounts) => ({
+      ...prevCounts,
+      [productId]: (prevCounts[productId] || 0) + 1,
+    }));
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: <button className='slick-prev'>Prev</button>,
+    nextArrow: <button className='slick-next'>Next</button>,
+  };
+
   return (
-    <>
-      <div className="container">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <div>
-            {/* users table */}
-            <table>
-              <thead>
-                <th>Picture</th>
-                <th>Gender</th>
-                <th>Name</th>
-                <th>Location</th>
-              </thead>
-              <tbody>
-                {data.map((user, index) => (
-                  <tr key={index}>
-                    <td>
-                      <img src={user.picture.medium} alt={user.name.first} />
-                    </td>
-                    <td>{user.gender}</td>
-                    <td>
-                      {user.name.first} {user.name.last}
-                    </td>
-                    <td>{user.location.country}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <div>
+      <Navbar>{}</Navbar>
+      <div id='all'>
+      {products.map((product) => (
+        <div key={product.id} className='block'>
+          <div className='product-title'>{product.title}</div>
+          <div className='product-description'>{product.description}</div>
+          <div className='slider-container'>
+            <Slider {...settings}>
+              {product.images.map((image, imgIndex) => (
+                <div key={imgIndex} className='slide'>
+                  <img src={image} alt={product.title} />
+                </div>
+              ))}
+            </Slider>
           </div>
-
-          {/* products table */}
-
-          <div>
-            <table>
-              <thead>
-                <th>Image</th>
-                <th>Product</th>
-                <th>Brand</th>
-                <th>Price</th>
-              </thead>
-              <tbody>
-                {products.map((product, index) => (
-                  <tr key={index} style={{textAlign: 'center'}}>
-                    <td>
-                      <img src={product.images[product.images.length - 1]} height={72} alt={product.title} />
-                    </td>
-                    <td>{product.title}</td>
-                    <td>{product.brand}</td>
-                    <td>{product.price} $</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className='d-flex'>
+            <button className='sepet' onClick={() => addCart(product.id)}>
+              Sepete Ekle
+            </button>
+            <div className='count'>
+              {counts[product.id] || 0}
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      ))}
+    </div>
+    </div>
   );
 }
 
