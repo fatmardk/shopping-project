@@ -65,7 +65,7 @@ img {
   right: 0;
 }
 
-.sepet {
+.cart {
   margin-top: 15px;
   background-color: rgb(244, 220, 101);
   border: none;
@@ -76,7 +76,7 @@ img {
   transition: background-color 0.3s ease;
 }
 
-.sepet:hover {
+.cart:hover {
   background-color: rgb(234, 205, 81);
 }
 
