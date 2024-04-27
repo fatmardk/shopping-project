@@ -17,7 +17,7 @@ const Settings = () => {
             <button>Change Address</button>
           </li>
           <li>
-            <button>Profilini Gör</button>
+            <button>Logout</button>
           </li>
         </ul>
       </div>

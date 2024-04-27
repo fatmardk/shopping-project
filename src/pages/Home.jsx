@@ -3,10 +3,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../Navbar";
+import Cart from "./Cart";
 
-const HomePage = () => {
+
+const Home = ({counts, setCounts}) => {
   const [products, setProducts] = useState([]);
-  const [counts, setCounts] = useState({});
 
   useEffect(() => {
     fetchProducts();
@@ -27,12 +28,12 @@ const HomePage = () => {
       console.error(error);
     }
   };
-
   const addCart = (productId) => {
     setCounts((prevCounts) => ({
       ...prevCounts,
       [productId]: (prevCounts[productId] || 0) + 1,
     }));
+    console.log(productId);
   };
 
   const settings = {
@@ -45,8 +46,11 @@ const HomePage = () => {
     nextArrow: <button className='slick-next'>Next</button>,
   };
 
+
   return (
     <div>
+      {/* <Navbar /> */}
+      
       <div id='all'>
         {products.map((product) => (
           <div key={product.id} className='block'>
@@ -62,18 +66,27 @@ const HomePage = () => {
               </Slider>
             </div>
             <div className='d-flex'>
-              <button className='cart' onClick={() => addCart(product.id)}>
-                Add Cart
-              </button>
-              <div className='count'>
-                {counts[product.id] || 0}
+              <div>
+                <div className="title">{product.title}</div>
+                <div>{product.price}$</div>
+              </div>
+            </div>
+            <div>
+            <div className='cart' onClick={() => addCart(product.id)}>
+              <div className="add-cart-container">
+                <p className="add-text">Add Cart</p>
+                <div className='count'>{counts[product.id] || 0}</div>
               </div>
             </div>
           </div>
+
+            
+          </div>
         ))}
       </div>
+      
     </div>
   );
 };
 
-export default HomePage;
+export default Home;
