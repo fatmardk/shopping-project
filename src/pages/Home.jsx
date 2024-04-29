@@ -28,12 +28,13 @@ const Home = ({counts, setCounts}) => {
       console.error(error);
     }
   };
-  const addCart = (productId) => {
+  const addCart = (productId,productName,productPrice) => {
     setCounts((prevCounts) => ({
       ...prevCounts,
       [productId]: (prevCounts[productId] || 0) + 1,
+      [productName]:productPrice
+      // [productName]:productPrice
     }));
-    console.log(productId);
   };
 
   const settings = {
@@ -72,9 +73,9 @@ const Home = ({counts, setCounts}) => {
               </div>
             </div>
             <div>
-            <div className='cart' onClick={() => addCart(product.id)}>
+            <div className='cart' onClick={() => addCart(product.id,product.title,product.price)}>
               <div className="add-cart-container">
-                <p className="add-text">Add Cart</p>
+                <p className="add-text">Add to Cart</p>
                 <div className='count'>{counts[product.id] || 0}</div>
               </div>
             </div>

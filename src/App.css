@@ -95,7 +95,7 @@ img {
   position: absolute;
   top: -5px;
   right: -10px;
-  background-color: rgba(129, 5, 5);
+  background-color: rgb(129, 1, 1);
   color: white;
   padding: 4px 8px;
   border-radius: 50%; 
